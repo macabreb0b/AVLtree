@@ -58,6 +58,10 @@ describe "AVL node" do
     it "sets the parent of child nodes" do
       expect(root.left.parent.value).to eq(7)
     end
+    
+    it "calls #check_balance after insertion" do
+      expect(root).to receive(:check_balance)
+    end
   end
   
   describe "#depth" do
@@ -106,7 +110,7 @@ describe "AVL node" do
   end
   
   describe "#check_balance" do
-    it "calls #rotate if absolute value of balance is over 1" do
+    it "calls #rotate! if absolute value of balance is over 1" do
       root.insert(Node.new(4))
       root.insert(Node.new(3))
       
@@ -114,12 +118,16 @@ describe "AVL node" do
       root.check_balance!
     end
     
-    it "does not call #rotate if absolute value of balance is 1 or below" do
+    it "does not call #rotate! if absolute value of balance is 1 or below" do
       root.insert(Node.new(4))
       root.insert(Node.new(8))
       
       expect(root).to_not receive(:rotate!)
       root.check_balance!
     end
+  end
+  
+  describe "#rotate!" do
+    it "calls #rotate! after insertion"
   end
 end

@@ -2,6 +2,24 @@ class Node
   attr_accessor :value, :parent
   attr_reader :left, :right
   
+  def self.left_rotation(node)
+    high_node = node
+    low_node = node.right
+    
+    high_node.right = low_node.left
+    low_node.parent = high_node.parent
+    low_node.left = high_node
+  end
+  
+  def self.right_rotation(node)
+    high_node = node
+    low_node = node.left
+    
+    high_node.left = low_node.right
+    low_node.parent = high_node.parent
+    low_node.right = high_node
+  end
+  
   def initialize(value)
     @parent = nil
     @value = value
@@ -71,29 +89,18 @@ class Node
   end
   
   def rotate!
-    # check which case, and call rotations on appropriate nodes:
-    # -2, 0 => left rotation
-    # -2, -1 => left rotation
-    # -2, 1, 0 => 
-    # -2, 1, 1 => 
-    # -2, 1, -1 => 
-    
-    # 2, 0 => right rotation
-    # 2, -1 => right rotation
-    # 2, 1, 0 => 
-    # 2, 1, 1 => 
-    # 2, 1, -1 => 
-  end
-  
-  def self.left_rotation(low_node, high_node)
-    high_node.right = low_node.left
-    low_node.parent = high_node.parent
-    low_node.left = high_node
-  end
-  
-  def self.right_rotation(low_node, high_node)
-    high_node.left = low_node.right
-    low_node.parent = high_node.parent
-    low_node.right = high_node
-  end
+    if self.balance == 2
+      if left.balance == -1
+        Node.left_rotation(left)
+      end
+      
+      Node.right_rotation(self)
+    else
+      if right.balance == 1
+        Node.right_rotation(right)
+      end
+      
+      Node.left_rotation(self)
+    end
+  end  
 end
